@@ -118,7 +118,8 @@ const items = [
   },
 ];
 
-
+let error = document.querySelector(".error");
+let text = "";
 // show all items
 let boxs = document.querySelector(".shop .parent-boxs")
 function showItems() {
@@ -135,6 +136,28 @@ function showItems() {
     </div>`;
     boxs.appendChild(itemEl);
   });
+// add to cart
+
+let btnsAdd = document.querySelectorAll(".cart");
+
+btnsAdd.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    let id = btn.dataset.id;
+    items.find((item) => {  //like foreach
+      if (item.id == id) {
+        if (cartItems.some((cartItem) => cartItem.id == id)) {  //to filter items in cart
+          alert("product already exist");
+        } else {
+          text = "Product is added successfully !";
+          error.innerHTML = text;
+          error.classList.add("alert-success");
+          cartItems.push(item);
+        }
+      }
+    });
+    showCart();
+  });
+});
 }
 showItems();
 
@@ -166,29 +189,7 @@ showCart();
 
 
 
-// add to cart
 
-let btnsAdd = document.querySelectorAll(".cart");
-var error = document.querySelector(".error");
-var text = "";
-btnsAdd.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    let id = btn.dataset.id;
-    items.find((item) => {  //like foreach
-      if (item.id == id) {
-        if (cartItems.some((cartItem) => cartItem.id == id)) {  //to filter items in cart
-          alert("product already exist");
-        } else {
-          text = "Product is added successfully !";
-          error.innerHTML = text;
-          error.classList.add("alert-success");
-          cartItems.push(item);
-        }
-      }
-    });
-    showCart();
-  });
-});
 
 
 
@@ -223,7 +224,7 @@ function updateCartItem(action, id) {
 
 // delete cart item
 function delteCartItem(id) {
-  cartItems = cartItems.filter((item) => item.id != id);
+  cartItems = cartItems.filter((item) => item.id !== id);
 
   text = "Product is deleted successfully !";
   error.innerHTML = text;
